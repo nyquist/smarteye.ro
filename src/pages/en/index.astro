@@ -159,14 +159,14 @@ const packageTagVariantEn = {
 		align-items: center;
 	}
 
-	/* English headlines are longer than RO — avoid 16ch squeeze */
+	/* English headlines are longer than RO — wider measure so ~2 lines like RO hero */
 	.page-home-en .hero-copy {
 		min-width: 0;
 	}
 
 	.page-home-en .hero-copy h1 {
 		font-size: clamp(2rem, 5vw, 3.2rem);
-		max-width: 20rem;
+		max-width: min(42ch, 100%);
 		line-height: 1.12;
 		text-wrap: balance;
 	}

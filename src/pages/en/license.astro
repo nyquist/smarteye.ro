@@ -2,39 +2,37 @@
 import Layout from '../../layouts/Layout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
-import { sitePath } from '../../utils/sitePath';
+import LicenseCertificateCard from '../../components/LicenseCertificateCard.astro';
 ---
 
 <Layout
 	lang="en"
 	title="Security License - Smarteye"
-	description="Smarteye security license details and public contact information."
+	description="Smarteye security systems license details."
 >
 	<SiteHeader lang="en" />
 	<main class="section">
 		<div class="container">
 			<h1>Security License</h1>
 			<div class="grid license-grid">
-				<article class="card">
-					<h2>License</h2>
-					<p><strong>No:</strong> 1734/T/14.07.2009</p>
-					<figure class="license-figure">
-						<img
-							src={sitePath('licenta-2015.png')}
-							alt="Smarteye security systems license"
-							width="796"
-							height="553"
-							loading="lazy"
-						/>
-					</figure>
-				</article>
-				<article class="card">
-					<h2>Contact details</h2>
-					<p><strong>Phone:</strong> 0725 252 762, 021 2310 697</p>
-					<p><strong>Email:</strong> office@smarteye.ro, vanzari@smarteye.ro, service@smarteye.ro</p>
+				<LicenseCertificateCard lang="en" />
+				<article class="card license-legal">
+					<h2>Legal framework</h2>
 					<p>
-						<strong>Address:</strong> Strada Pictor Stefan Luchian no. 20, room 3, Sector 2,
-						Bucharest, CP 023958
+						Under Romanian <strong>Law no. 333/2003</strong> on guarding objectives, property,
+						values and the protection of persons, design, installation, modification or
+						maintenance of technical protection and anti-burglar alarm systems may only be carried
+						out by natural or legal persons holding a licence issued by the competent authority
+						(Romanian General Police Inspectorate), as set out in <strong>Article 34</strong> of
+						the same law and in the implementing rules (Government Decision no. 301/2012).
+					</p>
+					<p class="license-legal-source">
+						<a
+							href="https://legislatie.just.ro/Public/DetaliiDocument/41868"
+							target="_blank"
+							rel="noopener noreferrer"
+							>Law 333/2003 – official text (legislatie.just.ro)</a
+						>
 					</p>
 				</article>
 			</div>
@@ -46,19 +44,14 @@ import { sitePath } from '../../utils/sitePath';
 <style>
 	.license-grid {
 		margin-top: 1rem;
+		grid-template-columns: 1fr;
+		align-items: start;
 	}
 
-	.license-figure {
-		margin: 0.75rem 0 0;
-		border-radius: 0.75rem;
-		overflow: hidden;
-		border: 1px solid var(--border);
-		background: #0a0f1f;
-	}
-
-	.license-figure img {
-		display: block;
-		width: 100%;
-		height: auto;
+	/* Desktop: licence 60% · legal 40% */
+	@media (min-width: 900px) {
+		.license-grid {
+			grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+		}
 	}
 </style>

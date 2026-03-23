@@ -2,39 +2,38 @@
 import Layout from '../layouts/Layout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import { sitePath } from '../utils/sitePath';
+import LicenseCertificateCard from '../components/LicenseCertificateCard.astro';
 ---
 
 <Layout
 	lang="ro"
 	title="Licenta sisteme de securitate - Smarteye"
-	description="Detalii despre licenta Smarteye si datele de contact publicate."
+	description="Detalii despre licenta Smarteye pentru sisteme de securitate."
 >
 	<SiteHeader lang="ro" />
 	<main class="section">
 		<div class="container">
 			<h1>Licenta sisteme de securitate</h1>
 			<div class="grid license-grid">
-				<article class="card">
-					<h2>Licenta</h2>
-					<p><strong>Nr:</strong> 1734/T/14.07.2009</p>
-					<figure class="license-figure">
-						<img
-							src={sitePath('licenta-2015.png')}
-							alt="Licenta Smarteye - sisteme de securitate"
-							width="796"
-							height="553"
-							loading="lazy"
-						/>
-					</figure>
-				</article>
-				<article class="card">
-					<h2>Date de contact</h2>
-					<p><strong>Telefon:</strong> 0725 252 762, 021 2310 697</p>
-					<p><strong>Email:</strong> office@smarteye.ro, vanzari@smarteye.ro, service@smarteye.ro</p>
+				<LicenseCertificateCard lang="ro" />
+				<article class="card license-legal">
+					<h2>Cadrul legal</h2>
 					<p>
-						<strong>Adresa:</strong> Strada Pictor Stefan Luchian nr. 20, cam 3, Sector 2,
-						Bucuresti, CP 023958
+						Conform <strong>Legii nr. 333/2003</strong> privind paza obiectivelor, bunurilor,
+						valorilor și protecția persoanelor, activitățile de proiectare, instalare, modificare
+						sau întreținere a sistemelor tehnice de protecție și de alarmare împotriva efracției
+						pot fi desfășurate numai de persoane fizice sau juridice care dețin licență eliberată
+						de autoritatea competentă (Inspectoratul General al Poliției Române), în condițiile
+						prevăzute la <strong>art. 34</strong> din aceeași lege și în normele metodologice de
+						aplicare (Hotărârea Guvernului nr. 301/2012).
+					</p>
+					<p class="license-legal-source">
+						<a
+							href="https://legislatie.just.ro/Public/DetaliiDocument/41868"
+							target="_blank"
+							rel="noopener noreferrer"
+							>Legea 333/2003 – text oficial (legislatie.just.ro)</a
+						>
 					</p>
 				</article>
 			</div>
@@ -46,19 +45,14 @@ import { sitePath } from '../utils/sitePath';
 <style>
 	.license-grid {
 		margin-top: 1rem;
+		grid-template-columns: 1fr;
+		align-items: start;
 	}
 
-	.license-figure {
-		margin: 0.75rem 0 0;
-		border-radius: 0.75rem;
-		overflow: hidden;
-		border: 1px solid var(--border);
-		background: #0a0f1f;
-	}
-
-	.license-figure img {
-		display: block;
-		width: 100%;
-		height: auto;
+	/* PC: licență 60% · cadrul legal 40% */
+	@media (min-width: 900px) {
+		.license-grid {
+			grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+		}
 	}
 </style>

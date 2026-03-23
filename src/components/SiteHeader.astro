@@ -10,7 +10,15 @@ const isRo = lang === 'ro';
 		<a href={isRo ? sitePath('') : sitePath('en/')} class="brand" aria-label="Smarteye home">
 			<img src={sitePath('logo-smarteye-header.png')} alt="Smarteye" />
 		</a>
-		<nav>
+		<input type="checkbox" id="site-nav-toggle" class="site-nav-cb" />
+		<label
+			for="site-nav-toggle"
+			class="site-nav-burger"
+			aria-label={isRo ? 'Deschide meniul' : 'Open menu'}
+		>
+			<span class="burger-lines" aria-hidden="true"></span>
+		</label>
+		<nav class="primary-nav" aria-label={isRo ? 'Navigare principală' : 'Main navigation'}>
 			<a href={isRo ? sitePath('') : sitePath('en/')}>{isRo ? 'Acasa' : 'Home'}</a>
 			<a href={isRo ? sitePath('despre-noi') : sitePath('en/about')}>{isRo ? 'Despre noi' : 'About'}</a>
 			<a href={isRo ? sitePath('licenta') : sitePath('en/license')}>{isRo ? 'Licenta' : 'License'}</a>
@@ -34,13 +42,16 @@ const isRo = lang === 'ro';
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		gap: 0.75rem;
 		padding: 0.9rem 0;
+		position: relative;
 	}
 
 	.brand {
 		text-decoration: none;
 		display: inline-flex;
 		align-items: center;
+		flex-shrink: 0;
 	}
 
 	.brand img {
@@ -49,23 +60,146 @@ const isRo = lang === 'ro';
 		display: block;
 	}
 
-	nav {
+	/* Checkbox: never visible; drives mobile menu */
+	.site-nav-cb {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	.site-nav-burger {
+		display: none;
+		align-items: center;
+		justify-content: center;
+		width: 2.75rem;
+		height: 2.75rem;
+		margin-left: auto;
+		border-radius: 0.65rem;
+		border: 1px solid rgba(169, 182, 211, 0.28);
+		background: rgba(23, 34, 58, 0.75);
+		cursor: pointer;
+		flex-shrink: 0;
+		transition: background 0.15s ease, border-color 0.15s ease;
+	}
+
+	.site-nav-burger:hover {
+		background: rgba(30, 44, 72, 0.95);
+		border-color: rgba(169, 182, 211, 0.4);
+	}
+
+	.burger-lines {
+		position: relative;
+		display: block;
+		width: 1.15rem;
+		height: 2px;
+		background: #e8eeff;
+		border-radius: 1px;
+		transition: transform 0.2s ease, background 0.2s ease;
+	}
+
+	.burger-lines::before,
+	.burger-lines::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		width: 100%;
+		height: 2px;
+		background: #e8eeff;
+		border-radius: 1px;
+		transition: transform 0.2s ease;
+	}
+
+	.burger-lines::before {
+		top: -6px;
+	}
+
+	.burger-lines::after {
+		top: 6px;
+	}
+
+	.site-nav-cb:checked + .site-nav-burger .burger-lines {
+		background: transparent;
+	}
+
+	.site-nav-cb:checked + .site-nav-burger .burger-lines::before {
+		top: 0;
+		transform: rotate(45deg);
+	}
+
+	.site-nav-cb:checked + .site-nav-burger .burger-lines::after {
+		top: 0;
+		transform: rotate(-45deg);
+	}
+
+	.primary-nav {
 		display: flex;
 		gap: 1rem;
 		align-items: center;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		row-gap: 0.5rem;
 	}
 
-	nav a {
+	.primary-nav a {
 		color: #cdd8f6;
 		text-decoration: none;
 		font-weight: 600;
 	}
 
-	.lang {
+	.primary-nav .lang {
 		padding: 0.4rem 0.7rem;
 		border: 1px solid rgba(169, 182, 211, 0.25);
 		border-radius: 0.7rem;
 		background: rgba(23, 34, 58, 0.6);
+	}
+
+	@media (max-width: 720px) {
+		.header-wrap {
+			flex-wrap: wrap;
+		}
+
+		.site-nav-burger {
+			display: inline-flex;
+		}
+
+		.primary-nav {
+			display: none;
+			flex-direction: column;
+			align-items: stretch;
+			flex-wrap: nowrap;
+			gap: 0;
+			width: 100%;
+			flex-basis: 100%;
+			order: 3;
+			margin-top: 0.35rem;
+			padding: 0.35rem 0 0.15rem;
+			border-top: 1px solid rgba(169, 182, 211, 0.15);
+		}
+
+		.primary-nav a {
+			padding: 0.72rem 0.15rem;
+			font-size: 1rem;
+			border-bottom: 1px solid rgba(169, 182, 211, 0.1);
+		}
+
+		.primary-nav a:last-child {
+			border-bottom: none;
+		}
+
+		.primary-nav .lang {
+			align-self: flex-start;
+			margin-top: 0.25rem;
+		}
+
+		.site-nav-cb:checked ~ .primary-nav {
+			display: flex;
+		}
 	}
 
 	@media (max-width: 640px) {
@@ -75,14 +209,6 @@ const isRo = lang === 'ro';
 
 		.header-wrap {
 			padding: 0.78rem 0;
-		}
-
-		nav {
-			gap: 0.7rem;
-		}
-
-		nav a {
-			font-size: 0.92rem;
 		}
 	}
 </style>

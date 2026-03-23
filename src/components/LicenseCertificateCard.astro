@@ -1,0 +1,270 @@
+---
+import { sitePath } from '../utils/sitePath';
+
+const { lang = 'ro' } = Astro.props;
+const isRo = lang === 'ro';
+const imgPath = sitePath('licenta-2015.png');
+---
+
+<article class="card license-doc-card">
+	<h2>{isRo ? 'Licență' : 'License'}</h2>
+	<dl class="license-details">
+		<div>
+			<dt>{isRo ? 'Număr înregistrare' : 'Registration no.'}</dt>
+			<dd>1734/T/14.07.2009</dd>
+		</div>
+		<div>
+			<dt>{isRo ? 'Document' : 'Certificate'}</dt>
+			<dd>
+				{isRo
+					? 'Copie scanată a licenței eliberate de autoritatea competentă (actualizată 2015).'
+					: 'Scanned copy of the licence issued by the competent authority (2015 update).'}
+			</dd>
+		</div>
+	</dl>
+	<p class="license-zoom-hint">
+		{isRo
+			? 'Pentru a citi toate detaliile de pe document, apasă pe imagine sau pe butonul de mai jos.'
+			: 'To read all details on the certificate, tap the image or use the button below.'}
+	</p>
+	<button
+		type="button"
+		class="license-figure-btn"
+		id="license-enlarge-trigger"
+		aria-haspopup="dialog"
+		aria-expanded="false"
+		aria-controls="license-detail-dialog"
+	>
+		<figure class="license-figure">
+			<img
+				src={imgPath}
+				alt={isRo ? 'Licență Smarteye - sisteme de securitate' : 'Smarteye security systems licence'}
+				width="796"
+				height="553"
+				loading="lazy"
+			/>
+		</figure>
+		<span class="license-figure-cta">{isRo ? 'Vezi mărit' : 'View larger'}</span>
+	</button>
+</article>
+
+<dialog id="license-detail-dialog" class="license-dialog" aria-labelledby="license-dialog-title">
+	<div class="license-dialog-inner">
+		<header class="license-dialog-head">
+			<h2 id="license-dialog-title" class="license-dialog-title">
+				{isRo ? 'Licență — vizualizare detaliată' : 'Licence — detailed view'}
+			</h2>
+			<button type="button" class="license-dialog-close" aria-label={isRo ? 'Închide' : 'Close'}>
+				<span aria-hidden="true">×</span>
+			</button>
+		</header>
+		<div class="license-dialog-body">
+			<img
+				src={imgPath}
+				alt=""
+				width="796"
+				height="553"
+				loading="eager"
+				decoding="async"
+			/>
+		</div>
+	</div>
+</dialog>
+
+<script is:inline>
+	(function () {
+		var trigger = document.getElementById('license-enlarge-trigger');
+		var dialog = document.getElementById('license-detail-dialog');
+		if (!trigger || !dialog) return;
+		var closeBtn = dialog.querySelector('.license-dialog-close');
+
+		function setOpen(open) {
+			trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+		}
+
+		trigger.addEventListener('click', function () {
+			if (typeof dialog.showModal === 'function') {
+				dialog.showModal();
+				setOpen(true);
+			}
+		});
+
+		function closeDialog() {
+			if (typeof dialog.close === 'function') {
+				dialog.close();
+				setOpen(false);
+			}
+		}
+
+		if (closeBtn) closeBtn.addEventListener('click', closeDialog);
+
+		dialog.addEventListener('click', function (e) {
+			if (e.target === dialog) closeDialog();
+		});
+
+		dialog.addEventListener('close', function () {
+			setOpen(false);
+		});
+	})();
+</script>
+
+<style>
+	.license-doc-card {
+		min-width: 0;
+	}
+
+	.license-details {
+		margin: 0 0 1rem;
+		display: grid;
+		gap: 0.85rem;
+	}
+
+	.license-details div {
+		margin: 0;
+	}
+
+	.license-details dt {
+		font-size: 0.78rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--muted);
+		margin: 0 0 0.25rem;
+	}
+
+	.license-details dd {
+		margin: 0;
+		color: var(--text);
+		line-height: 1.5;
+	}
+
+	.license-zoom-hint {
+		font-size: 0.92rem;
+		margin: 0 0 0.75rem;
+		color: var(--muted);
+	}
+
+	.license-figure-btn {
+		display: block;
+		width: 100%;
+		padding: 0;
+		margin: 0;
+		border: none;
+		background: transparent;
+		cursor: zoom-in;
+		border-radius: 0.75rem;
+		text-align: left;
+		font: inherit;
+		color: inherit;
+	}
+
+	.license-figure-btn:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 3px;
+	}
+
+	.license-figure {
+		margin: 0;
+		border-radius: 0.75rem;
+		overflow: hidden;
+		border: 1px solid var(--border);
+		background: #0a0f1f;
+		transition: box-shadow 0.2s ease, border-color 0.2s ease;
+	}
+
+	.license-figure-btn:hover .license-figure {
+		border-color: rgba(169, 182, 211, 0.45);
+		box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.25);
+	}
+
+	.license-figure img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.license-figure-cta {
+		display: inline-block;
+		margin-top: 0.65rem;
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: #ffb3b3;
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
+
+	.license-dialog {
+		max-width: min(96vw, 920px);
+		width: 100%;
+		padding: 0;
+		border: 1px solid var(--border);
+		border-radius: 1rem;
+		background: var(--surface);
+		color: var(--text);
+		box-shadow: 0 24px 48px rgba(2, 6, 23, 0.65);
+	}
+
+	.license-dialog::backdrop {
+		background: rgba(2, 6, 23, 0.72);
+		backdrop-filter: blur(4px);
+	}
+
+	.license-dialog-inner {
+		display: flex;
+		flex-direction: column;
+		max-height: min(92vh, 900px);
+	}
+
+	.license-dialog-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 0.85rem 1rem;
+		border-bottom: 1px solid var(--border);
+		flex-shrink: 0;
+	}
+
+	.license-dialog-title {
+		margin: 0;
+		font-size: 1.05rem;
+		font-weight: 700;
+		line-height: 1.3;
+	}
+
+	.license-dialog-close {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.5rem;
+		height: 2.5rem;
+		padding: 0;
+		border-radius: 0.6rem;
+		border: 1px solid var(--border);
+		background: rgba(23, 34, 58, 0.85);
+		color: var(--text);
+		font-size: 1.5rem;
+		line-height: 1;
+		cursor: pointer;
+		flex-shrink: 0;
+	}
+
+	.license-dialog-close:hover {
+		background: rgba(30, 44, 72, 0.95);
+	}
+
+	.license-dialog-body {
+		padding: 0.75rem;
+		overflow: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.license-dialog-body img {
+		display: block;
+		width: 100%;
+		height: auto;
+		max-width: 100%;
+		margin: 0 auto;
+		border-radius: 0.5rem;
+	}
+</style>
