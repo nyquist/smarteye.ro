@@ -1,0 +1,66 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import ContactForm from '../components/ContactForm.astro';
+---
+
+<Layout
+	lang="ro"
+	title="Contact - Smarteye"
+	description="Date de contact Smarteye si formular pentru solicitari de oferta."
+>
+	<SiteHeader lang="ro" />
+	<main class="section">
+		<div class="container">
+			<h1>Contact</h1>
+			<p>Trimite-ne un mesaj pentru oferta, instalare, mentenanta sau suport tehnic.</p>
+			<div class="grid contact-grid">
+				<article class="card">
+					<h2>Adresă punct de lucru</h2>
+					<p>
+						Bucuresti, Strada Pictor Stefan Luchian nr. 20, camera 3, sector 2.
+					</p>
+					<div class="map-wrap">
+						<iframe
+							title="Harta locatie Smarteye"
+							src="https://www.google.com/maps?q=Strada%20Pictor%20Stefan%20Luchian%2020%2C%20Bucuresti&output=embed"
+							loading="lazy"
+							referrerpolicy="no-referrer-when-downgrade"
+						></iframe>
+					</div>
+				</article>
+				<article class="card form-card">
+					<h2>Trimite un mesaj</h2>
+					<p>
+						Descrie pe scurt ce ai nevoie (alarma, video, mentenanta) si revenim cu o recomandare.
+						Poti folosi si telefonul sau emailul din footer.
+					</p>
+					<ContactForm lang="ro" />
+				</article>
+			</div>
+		</div>
+	</main>
+	<SiteFooter lang="ro" />
+</Layout>
+
+<style>
+	.contact-grid {
+		margin-top: 1rem;
+	}
+
+	.map-wrap {
+		margin-top: 0.6rem;
+		border: 1px solid var(--border);
+		border-radius: 0.9rem;
+		overflow: hidden;
+		background: #0a0f1f;
+	}
+
+	.map-wrap iframe {
+		display: block;
+		width: 100%;
+		height: 280px;
+		border: 0;
+	}
+</style>
