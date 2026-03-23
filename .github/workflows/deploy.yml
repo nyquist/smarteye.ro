@@ -33,6 +33,9 @@ jobs:
       - name: Build
         env:
           PUBLIC_WEB3FORMS_ACCESS_KEY: ${{ secrets.PUBLIC_WEB3FORMS_ACCESS_KEY }}
+          # Project Pages live at https://OWNER.github.io/REPO/ — base must match repo name
+          PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+          PUBLIC_SITE_URL: https://${{ github.repository_owner }}.github.io
         run: npm run build
 
       - name: Setup Pages

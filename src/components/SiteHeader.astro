@@ -1,19 +1,21 @@
 ---
+import { sitePath } from '../utils/sitePath';
+
 const { lang = 'ro' } = Astro.props;
 const isRo = lang === 'ro';
 ---
 
 <header class="site-header">
 	<div class="container header-wrap">
-		<a href={isRo ? '/' : '/en/'} class="brand" aria-label="Smarteye home">
-			<img src="/logo-smarteye-header.png" alt="Smarteye" />
+		<a href={isRo ? sitePath('') : sitePath('en/')} class="brand" aria-label="Smarteye home">
+			<img src={sitePath('logo-smarteye-header.png')} alt="Smarteye" />
 		</a>
 		<nav>
-			<a href={isRo ? '/' : '/en/'}>{isRo ? 'Acasa' : 'Home'}</a>
-			<a href={isRo ? '/despre-noi' : '/en/about'}>{isRo ? 'Despre noi' : 'About'}</a>
-			<a href={isRo ? '/licenta' : '/en/license'}>{isRo ? 'Licenta' : 'License'}</a>
-			<a href={isRo ? '/contact' : '/en/contact'}>{isRo ? 'Contact' : 'Contact'}</a>
-			<a href={isRo ? '/en/' : '/'} class="lang">{isRo ? 'EN' : 'RO'}</a>
+			<a href={isRo ? sitePath('') : sitePath('en/')}>{isRo ? 'Acasa' : 'Home'}</a>
+			<a href={isRo ? sitePath('despre-noi') : sitePath('en/about')}>{isRo ? 'Despre noi' : 'About'}</a>
+			<a href={isRo ? sitePath('licenta') : sitePath('en/license')}>{isRo ? 'Licenta' : 'License'}</a>
+			<a href={isRo ? sitePath('contact') : sitePath('en/contact')}>{isRo ? 'Contact' : 'Contact'}</a>
+			<a href={isRo ? sitePath('en/') : sitePath('')} class="lang">{isRo ? 'EN' : 'RO'}</a>
 		</nav>
 	</div>
 </header>

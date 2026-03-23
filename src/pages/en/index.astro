@@ -3,6 +3,7 @@ import SiteHeader from '../../components/SiteHeader.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import Layout from '../../layouts/Layout.astro';
 import { packagesRo } from '../../data/packages.js';
+import { sitePath } from '../../utils/sitePath';
 
 const packagesEn = packagesRo.map((pkg) => ({
 	...pkg,
@@ -46,7 +47,7 @@ const packageTagVariantEn = {
 					reliability, and fast response.
 				</p>
 				<div class="actions">
-					<a class="button" href="/en/contact">Request offer</a>
+					<a class="button" href={sitePath('en/contact')}>Request offer</a>
 					<a class="button secondary" href="#packages">View packages</a>
 				</div>
 				<div class="chips">
@@ -71,7 +72,7 @@ const packageTagVariantEn = {
 										<li>{item}</li>
 									))}
 								</ul>
-								<a class="button package-btn" href="/en/contact">Request offer</a>
+								<a class="button package-btn" href={sitePath('en/contact')}>Request offer</a>
 							</article>
 						))
 					}
@@ -128,14 +129,14 @@ const packageTagVariantEn = {
 				<h2>Ready to secure your property?</h2>
 				<p>Send us your request and we will return with a clear recommendation.</p>
 				<div class="actions">
-					<a class="button" href="/en/contact">Request offer</a>
+					<a class="button" href={sitePath('en/contact')}>Request offer</a>
 					<a class="button secondary" href="tel:+40xxxxxxxxx">Call now</a>
 				</div>
 			</div>
 		</section>
 	</main>
 	<SiteFooter lang="en" />
-	<a class="mobile-cta" href="/en/contact">Request offer</a>
+	<a class="mobile-cta" href={sitePath('en/contact')}>Request offer</a>
 </Layout>
 
 <style>

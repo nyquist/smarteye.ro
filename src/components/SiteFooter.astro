@@ -1,4 +1,6 @@
 ---
+import { sitePath } from '../utils/sitePath';
+
 const { lang = 'ro' } = Astro.props;
 const isRo = lang === 'ro';
 ---
@@ -7,7 +9,7 @@ const isRo = lang === 'ro';
 	<div class="container footer-inner">
 		<div class="footer-top">
 			<div class="brand-block">
-				<img src="/logo-smarteye-red.png" alt="Smarteye" class="logo-white" />
+				<img src={sitePath('logo-smarteye-red.png')} alt="Smarteye" class="logo-white" />
 			</div>
 			<p class="tagline">
 				{isRo

@@ -30,6 +30,19 @@ npm run preview
 - Custom domain file: `public/CNAME` (`smarteye.ro`)
 - In repository settings, enable **Pages** and select **GitHub Actions** as source.
 
+### GitHub Pages URL (`https://USER.github.io/REPO/`)
+
+Project sites are served **under the repo name**. The workflow sets:
+
+- `PUBLIC_BASE_PATH=/<repo-name>` (from the repository name)
+- `PUBLIC_SITE_URL=https://<owner>.github.io`
+
+So logos, CSS (`/_astro/...`), and internal links resolve under `/REPO/`, not the domain root.
+
+For **local** builds, leave `PUBLIC_BASE_PATH` unset (defaults to `/`).
+
+When you add a **custom domain** at the site root (`https://smarteye.ro/`), set repository **Variables** or adjust the workflow so `PUBLIC_BASE_PATH=/` and `PUBLIC_SITE_URL=https://smarteye.ro` for that deployment.
+
 ## Current structure
 
 - `src/pages/index.astro` - Romanian home page

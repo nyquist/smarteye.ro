@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import { sitePath } from '../utils/sitePath';
 ---
 
 <Layout
@@ -19,7 +20,7 @@ import SiteFooter from '../components/SiteFooter.astro';
 					<p><strong>Nr:</strong> 1734/T/14.07.2009</p>
 					<figure class="license-figure">
 						<img
-							src="/licenta-2015.png"
+							src={sitePath('licenta-2015.png')}
 							alt="Licenta Smarteye - sisteme de securitate"
 							width="796"
 							height="553"

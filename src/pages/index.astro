@@ -3,6 +3,7 @@ import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import Layout from '../layouts/Layout.astro';
 import { packagesRo } from '../data/packages.js';
+import { sitePath } from '../utils/sitePath';
 
 const packageLabelsRo = {
 	'sistem-alarmare-cu-fir': 'Eficient',
@@ -34,7 +35,7 @@ const packageTagVariantRo = {
 					control, fiabilitate si raspuns rapid.
 				</p>
 				<div class="actions">
-					<a class="button" href="/contact">Cere oferta</a>
+					<a class="button" href={sitePath('contact')}>Cere oferta</a>
 					<a class="button secondary" href="#pachete">Vezi pachetele</a>
 				</div>
 				<div class="chips">
@@ -59,7 +60,7 @@ const packageTagVariantRo = {
 										<li>{item}</li>
 									))}
 								</ul>
-								<a class="button package-btn" href="/contact">Cere oferta</a>
+								<a class="button package-btn" href={sitePath('contact')}>Cere oferta</a>
 							</article>
 						))
 					}
@@ -118,14 +119,14 @@ const packageTagVariantRo = {
 					Trimite-ne cererea ta si revenim rapid cu o recomandare clara pentru casa sau business.
 				</p>
 				<div class="actions">
-					<a class="button" href="/contact">Cere oferta</a>
+					<a class="button" href={sitePath('contact')}>Cere oferta</a>
 					<a class="button secondary" href="tel:+40xxxxxxxxx">Suna acum</a>
 				</div>
 			</div>
 		</section>
 	</main>
 	<SiteFooter lang="ro" />
-	<a class="mobile-cta" href="/contact">Cere oferta</a>
+	<a class="mobile-cta" href={sitePath('contact')}>Cere oferta</a>
 </Layout>
 
 <style>
