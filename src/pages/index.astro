@@ -1,6 +1,7 @@
 ---
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import HeroTechGraphic from '../components/HeroTechGraphic.astro';
 import Layout from '../layouts/Layout.astro';
 import { packagesRo } from '../data/packages.js';
 import { sitePath } from '../utils/sitePath';
@@ -28,20 +29,27 @@ const packageTagVariantRo = {
 	<SiteHeader lang="ro" />
 	<main>
 		<section class="section hero">
-			<div class="container">
-				<h1>Securitate inteligenta, instalata profesionist.</h1>
-				<p>
-					Sisteme de alarmare si supraveghere video pentru locuinte si companii care vor
-					control, fiabilitate si raspuns rapid.
-				</p>
-				<div class="actions">
-					<a class="button" href={sitePath('contact')}>Cere oferta</a>
-					<a class="button secondary" href="#pachete">Vezi pachetele</a>
-				</div>
-				<div class="chips">
-					<span class="chip">Instalare rapida</span>
-					<span class="chip">Echipamente fiabile</span>
-					<span class="chip">Suport dedicat</span>
+			<div class="container hero-shell">
+				<div class="hero-main">
+					<div class="hero-copy">
+						<h1>Securitate inteligenta, instalata profesionist.</h1>
+						<p>
+							Sisteme de alarmare si supraveghere video pentru locuinte si companii care vor
+							control, fiabilitate si raspuns rapid.
+						</p>
+						<div class="actions">
+							<a class="button" href={sitePath('contact')}>Cere oferta</a>
+							<a class="button secondary" href="#pachete">Vezi pachetele</a>
+						</div>
+						<div class="chips">
+							<span class="chip">Instalare rapida</span>
+							<span class="chip">Echipamente fiabile</span>
+							<span class="chip">Suport dedicat</span>
+						</div>
+					</div>
+					<div class="hero-art">
+						<HeroTechGraphic lang="ro" />
+					</div>
 				</div>
 			</div>
 		</section>
@@ -130,13 +138,47 @@ const packageTagVariantRo = {
 </Layout>
 
 <style>
-	.hero h1 {
-		font-size: clamp(2rem, 5vw, 3.35rem);
-		max-width: 16ch;
+	.hero-shell {
+		position: relative;
 	}
 
-	.hero p {
-		max-width: 62ch;
+	.hero-main {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(260px, 44%);
+		gap: clamp(1.5rem, 4vw, 3rem);
+		align-items: center;
+	}
+
+	.hero-copy {
+		min-width: 0;
+	}
+
+	.hero-copy h1 {
+		font-size: clamp(2rem, 5vw, 3.35rem);
+		max-width: 16ch;
+		line-height: 1.15;
+	}
+
+	.hero-copy p {
+		max-width: 52ch;
+	}
+
+	.hero-art {
+		justify-self: end;
+		width: 100%;
+	}
+
+	@media (max-width: 960px) {
+		.hero-main {
+			grid-template-columns: 1fr;
+		}
+
+		.hero-art {
+			justify-self: stretch;
+			order: -1;
+			max-width: 420px;
+			margin-inline: auto;
+		}
 	}
 
 	.actions {

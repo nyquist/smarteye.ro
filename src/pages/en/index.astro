@@ -1,6 +1,7 @@
 ---
 import SiteHeader from '../../components/SiteHeader.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
+import HeroTechGraphic from '../../components/HeroTechGraphic.astro';
 import Layout from '../../layouts/Layout.astro';
 import { packagesRo } from '../../data/packages.js';
 import { sitePath } from '../../utils/sitePath';
@@ -38,22 +39,29 @@ const packageTagVariantEn = {
 	description="Security systems for homes and businesses: wired alarm, wireless alarm and video surveillance."
 >
 	<SiteHeader lang="en" />
-	<main>
+	<main class="page-home-en">
 		<section class="section hero">
-			<div class="container">
-				<h1>Smart security, installed professionally.</h1>
-				<p>
-					Alarm and video surveillance systems for homes and businesses that need control,
-					reliability, and fast response.
-				</p>
-				<div class="actions">
-					<a class="button" href={sitePath('en/contact')}>Request offer</a>
-					<a class="button secondary" href="#packages">View packages</a>
-				</div>
-				<div class="chips">
-					<span class="chip">Fast installation</span>
-					<span class="chip">Reliable equipment</span>
-					<span class="chip">Dedicated support</span>
+			<div class="container hero-shell">
+				<div class="hero-main">
+					<div class="hero-copy">
+						<h1>Smart security, installed professionally.</h1>
+						<p>
+							Alarm and video surveillance systems for homes and businesses that need control,
+							reliability, and fast response.
+						</p>
+						<div class="actions">
+							<a class="button" href={sitePath('en/contact')}>Request offer</a>
+							<a class="button secondary" href="#packages">View packages</a>
+						</div>
+						<div class="chips">
+							<span class="chip">Fast installation</span>
+							<span class="chip">Reliable equipment</span>
+							<span class="chip">Dedicated support</span>
+						</div>
+					</div>
+					<div class="hero-art">
+						<HeroTechGraphic lang="en" />
+					</div>
 				</div>
 			</div>
 		</section>
@@ -140,13 +148,65 @@ const packageTagVariantEn = {
 </Layout>
 
 <style>
-	.hero h1 {
-		font-size: clamp(2rem, 5vw, 3.35rem);
-		max-width: 16ch;
+	.hero-shell {
+		position: relative;
 	}
 
-	.hero p {
-		max-width: 62ch;
+	.hero-main {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(260px, 44%);
+		gap: clamp(1.5rem, 4vw, 3rem);
+		align-items: center;
+	}
+
+	/* English headlines are longer than RO — avoid 16ch squeeze */
+	.page-home-en .hero-copy {
+		min-width: 0;
+	}
+
+	.page-home-en .hero-copy h1 {
+		font-size: clamp(2rem, 5vw, 3.2rem);
+		max-width: 20rem;
+		line-height: 1.12;
+		text-wrap: balance;
+	}
+
+	.page-home-en .hero-copy p {
+		max-width: 38rem;
+	}
+
+	/* Long package titles in English */
+	.page-home-en .package-card h3 {
+		font-size: 1.05rem;
+		line-height: 1.3;
+		overflow-wrap: anywhere;
+		word-break: break-word;
+	}
+
+	.page-home-en .grid {
+		align-items: stretch;
+	}
+
+	.page-home-en .grid > .card {
+		min-width: 0;
+	}
+
+	.hero-art {
+		justify-self: end;
+		width: 100%;
+	}
+
+	@media (max-width: 960px) {
+		.hero-main {
+			grid-template-columns: 1fr;
+		}
+
+		.hero-art {
+			justify-self: stretch;
+			order: -1;
+			max-width: 420px;
+			margin-inline: auto;
+		}
 	}
 
 	.actions {

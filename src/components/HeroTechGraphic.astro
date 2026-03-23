@@ -1,0 +1,249 @@
+---
+/**
+ * Decorative hero illustration: grid, nodes, HUD frame — technical / pro security vibe.
+ * Pure SVG + CSS; no external assets.
+ */
+interface Props {
+	lang?: 'ro' | 'en';
+}
+
+const { lang = 'ro' } = Astro.props;
+const labels =
+	lang === 'ro'
+		? { live: 'LIVE', zone: 'ZONA A1', rec: 'INREG', link: 'LINK OK' }
+		: { live: 'LIVE', zone: 'ZONE A1', rec: 'REC', link: 'LINK OK' };
+---
+
+<div class="hero-tech">
+	<div class="hero-tech-frame">
+		<svg
+			class="hero-tech-svg"
+			viewBox="0 0 440 360"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+			aria-hidden="true"
+		>
+			<defs>
+				<linearGradient id="htg-glow-red" x1="0%" y1="0%" x2="100%" y2="100%">
+					<stop offset="0%" stop-color="#ef4444" stop-opacity="0.35" />
+					<stop offset="100%" stop-color="#f97316" stop-opacity="0.08" />
+				</linearGradient>
+				<linearGradient id="htg-glow-cyan" x1="100%" y1="0%" x2="0%" y2="100%">
+					<stop offset="0%" stop-color="#22d3ee" stop-opacity="0.2" />
+					<stop offset="100%" stop-color="#3b82f6" stop-opacity="0.05" />
+				</linearGradient>
+				<filter id="htg-blur" x="-20%" y="-20%" width="140%" height="140%">
+					<feGaussianBlur stdDeviation="8" result="b" />
+				</filter>
+			</defs>
+
+			<!-- Soft blobs -->
+			<ellipse cx="320" cy="80" rx="120" ry="90" fill="url(#htg-glow-red)" filter="url(#htg-blur)" />
+			<ellipse cx="100" cy="260" rx="90" ry="70" fill="url(#htg-glow-cyan)" filter="url(#htg-blur)" />
+
+			<!-- Grid -->
+			<g stroke="rgba(148,163,184,0.12)" stroke-width="1">
+				{
+					Array.from({ length: 12 }).map((_, i) => (
+						<line x1={20 + i * 36} y1="40" x2={20 + i * 36} y2="320" />
+					))
+				}
+				{
+					Array.from({ length: 9 }).map((_, i) => (
+						<line x1="20" y1={40 + i * 35} x2="420" y2={40 + i * 35} />
+					))
+				}
+			</g>
+
+			<!-- Radar arc -->
+			<path
+				d="M 220 200 A 95 95 0 0 1 315 115"
+				stroke="rgba(239,68,68,0.25)"
+				stroke-width="1.5"
+				stroke-dasharray="6 4"
+				fill="none"
+				class="htg-dash"
+			/>
+			<path
+				d="M 220 200 A 70 70 0 0 0 130 140"
+				stroke="rgba(34,211,238,0.2)"
+				stroke-width="1"
+				stroke-dasharray="4 6"
+				fill="none"
+			/>
+
+			<!-- Central "lens" -->
+			<circle cx="220" cy="175" r="48" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" fill="rgba(15,23,42,0.5)" />
+			<circle cx="220" cy="175" r="36" stroke="rgba(239,68,68,0.4)" stroke-width="1" fill="none" />
+			<circle cx="220" cy="175" r="14" fill="rgba(239,68,68,0.15)" stroke="rgba(239,68,68,0.5)" stroke-width="1" />
+			<circle cx="224" cy="170" r="4" fill="rgba(255,255,255,0.35)" />
+
+			<!-- Sensor nodes -->
+			<g class="htg-node htg-node-a">
+				<circle cx="95" cy="95" r="6" fill="#ef4444" opacity="0.9" />
+				<circle cx="95" cy="95" r="14" stroke="#ef4444" stroke-opacity="0.35" stroke-width="1" fill="none" />
+			</g>
+			<g class="htg-node htg-node-b">
+				<circle cx="360" cy="120" r="5" fill="#22d3ee" opacity="0.85" />
+				<circle cx="360" cy="120" r="12" stroke="#22d3ee" stroke-opacity="0.3" stroke-width="1" fill="none" />
+			</g>
+			<g class="htg-node htg-node-c">
+				<circle cx="310" cy="275" r="5" fill="#a78bfa" opacity="0.8" />
+				<circle cx="310" cy="275" r="11" stroke="#a78bfa" stroke-opacity="0.28" stroke-width="1" fill="none" />
+			</g>
+
+			<!-- Connection lines -->
+			<path
+				d="M 95 95 L 184 145 M 360 120 L 262 155 M 310 275 L 248 205"
+				stroke="rgba(148,163,184,0.2)"
+				stroke-width="1"
+			/>
+
+			<!-- HUD corners -->
+			<g stroke="rgba(239,68,68,0.45)" stroke-width="1.5" fill="none" stroke-linecap="square">
+				<polyline points="32,48 32,72 56,72" />
+				<polyline points="408,48 384,48 384,72" />
+				<polyline points="32,312 32,288 56,288" />
+				<polyline points="408,312 384,312 384,288" />
+			</g>
+		</svg>
+
+		<div class="hero-tech-badges">
+			<span class="ht-badge ht-badge-live">{labels.live}</span>
+			<span class="ht-badge">{labels.zone}</span>
+			<span class="ht-badge">{labels.rec}</span>
+			<span class="ht-badge ht-badge-ok">{labels.link}</span>
+		</div>
+	</div>
+</div>
+
+<style>
+	.hero-tech {
+		width: 100%;
+		max-width: 520px;
+		margin-inline: auto;
+	}
+
+	.hero-tech-frame {
+		position: relative;
+		border-radius: 1.1rem;
+		border: 1px solid rgba(169, 182, 211, 0.22);
+		background: linear-gradient(165deg, rgba(18, 26, 45, 0.95) 0%, rgba(11, 16, 32, 0.88) 100%);
+		box-shadow:
+			0 0 0 1px rgba(0, 0, 0, 0.35),
+			0 24px 48px rgba(2, 6, 23, 0.45),
+			inset 0 1px 0 rgba(255, 255, 255, 0.04);
+		overflow: hidden;
+	}
+
+	.hero-tech-svg {
+		display: block;
+		width: 100%;
+		height: auto;
+		vertical-align: middle;
+	}
+
+	.htg-dash {
+		animation: htg-dash-move 14s linear infinite;
+	}
+
+	@keyframes htg-dash-move {
+		to {
+			stroke-dashoffset: -80;
+		}
+	}
+
+	.htg-node circle:last-child {
+		animation: htg-pulse 3s ease-in-out infinite;
+	}
+
+	.htg-node-b circle:last-child {
+		animation-delay: 0.7s;
+	}
+
+	.htg-node-c circle:last-child {
+		animation-delay: 1.4s;
+	}
+
+	@keyframes htg-pulse {
+		0%,
+		100% {
+			opacity: 0.35;
+		}
+		50% {
+			opacity: 0.9;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.htg-dash {
+			animation: none;
+		}
+
+		.htg-node circle:last-child {
+			animation: none;
+		}
+	}
+
+	.hero-tech-badges {
+		position: absolute;
+		left: 0.75rem;
+		right: 0.75rem;
+		bottom: 0.65rem;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+		pointer-events: none;
+	}
+
+	.ht-badge {
+		font-family: ui-monospace, 'Cascadia Code', monospace;
+		font-size: 0.62rem;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		padding: 0.22rem 0.45rem;
+		border-radius: 0.3rem;
+		background: rgba(15, 23, 42, 0.75);
+		border: 1px solid rgba(148, 163, 184, 0.25);
+		color: #94a3b8;
+	}
+
+	.ht-badge-live {
+		color: #fecaca;
+		border-color: rgba(239, 68, 68, 0.45);
+		box-shadow: 0 0 12px rgba(239, 68, 68, 0.15);
+	}
+
+	.ht-badge-live::before {
+		content: '';
+		display: inline-block;
+		width: 6px;
+		height: 6px;
+		margin-right: 0.35rem;
+		border-radius: 50%;
+		background: #ef4444;
+		vertical-align: middle;
+		animation: htg-blink 2s ease-in-out infinite;
+	}
+
+	@keyframes htg-blink {
+		0%,
+		100% {
+			opacity: 1;
+		}
+		50% {
+			opacity: 0.35;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.ht-badge-live::before {
+			animation: none;
+		}
+	}
+
+	.ht-badge-ok {
+		color: #86efac;
+		border-color: rgba(34, 197, 94, 0.35);
+	}
+</style>
