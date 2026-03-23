@@ -32,16 +32,14 @@ npm run preview
 
 ### GitHub Pages URL (`https://USER.github.io/REPO/`)
 
-Project sites are served **under the repo name**. The workflow sets:
+Project sites are served **under the repo name**. Astro `base` must be `/REPO` so logos, CSS (`/_astro/...`), and links work.
 
-- `PUBLIC_BASE_PATH=/<repo-name>` (from the repository name)
-- `PUBLIC_SITE_URL=https://<owner>.github.io`
+- The workflow can set `PUBLIC_BASE_PATH` / `PUBLIC_SITE_URL`, **or**
+- **`astro.config.mjs` auto-detects** on GitHub Actions: if `GITHUB_ACTIONS=true` and `GITHUB_REPOSITORY=owner/repo`, it uses base `/<repo>` (unless the repo is `*.github.io` for a user site).
 
-So logos, CSS (`/_astro/...`), and internal links resolve under `/REPO/`, not the domain root.
+For **local** builds, `base` stays `/`.
 
-For **local** builds, leave `PUBLIC_BASE_PATH` unset (defaults to `/`).
-
-When you add a **custom domain** at the site root (`https://smarteye.ro/`), set repository **Variables** or adjust the workflow so `PUBLIC_BASE_PATH=/` and `PUBLIC_SITE_URL=https://smarteye.ro` for that deployment.
+For a **custom domain** at the site root (`https://smarteye.ro/`), set `PUBLIC_BASE_PATH=/` and `PUBLIC_SITE_URL=https://smarteye.ro` for that deployment (or a dedicated workflow).
 
 ## Current structure
 
