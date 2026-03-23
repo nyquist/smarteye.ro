@@ -1,0 +1,383 @@
+---
+/**
+ * Web3Forms contact form with abuse mitigation:
+ * - hCaptcha (free Web3Forms site key; enable in Web3Forms dashboard)
+ * - botcheck honeypot (checkbox, hidden)
+ * - extra honeypot text field (reject if filled)
+ * - minimum time on page before submit
+ * - per-session rate limits (attempts + successful sends)
+ */
+interface Props {
+	lang: 'ro' | 'en';
+}
+
+const { lang } = Astro.props;
+
+const copy =
+	lang === 'ro'
+		? {
+				name: 'Nume',
+				email: 'Email',
+				phone: 'Telefon (optional)',
+				message: 'Mesaj',
+				submit: 'Trimite mesajul',
+				sending: 'Se trimite...',
+				success: 'Mesajul a fost trimis. Te vom contacta in curand.',
+				errGeneric: 'Nu am putut trimite mesajul. Incearca din nou sau suna-ne.',
+				errCaptcha: 'Completeaza verificarea anti-robot inainte de trimitere.',
+				errRate: 'Prea multe incercari. Incearca mai tarziu.',
+				errFast: 'Te rugam sa astepti cateva secunde inainte de trimitere.',
+				errSpam: 'Mesaj respins. Daca esti om, reincearca.',
+				honeypotLabel: 'Nu completa acest camp',
+				privacy: 'Prin trimitere accepti sa folosim datele pentru a te contacta.',
+				subject: 'Mesaj contact smarteye.ro',
+				fromName: 'Site smarteye.ro',
+				phonePrefix: '\n\nTelefon: ',
+			}
+		: {
+				name: 'Name',
+				email: 'Email',
+				phone: 'Phone (optional)',
+				message: 'Message',
+				submit: 'Send message',
+				sending: 'Sending...',
+				success: 'Message sent. We will get back to you soon.',
+				errGeneric: 'Could not send. Please try again or call us.',
+				errCaptcha: 'Please complete the verification before sending.',
+				errRate: 'Too many attempts. Please try again later.',
+				errFast: 'Please wait a few seconds before sending.',
+				errSpam: 'Submission rejected. If you are human, try again.',
+				honeypotLabel: 'Leave this field empty',
+				privacy: 'By sending, you agree we may use your details to contact you.',
+				subject: 'Contact form smarteye.ro',
+				fromName: 'smarteye.ro website',
+				phonePrefix: '\n\nPhone: ',
+			};
+
+const accessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? '';
+
+const msgs = JSON.stringify(copy);
+---
+
+<div class="contact-form-wrap">
+	{
+		accessKey ? (
+			<form id="smarteye-contact-form" class="contact-form" novalidate>
+				<label class="field">
+					<span>{copy.name}</span>
+					<input type="text" name="name" required maxlength="120" autocomplete="name" />
+				</label>
+
+				<label class="field">
+					<span>{copy.email}</span>
+					<input type="email" name="email" required maxlength="200" autocomplete="email" />
+				</label>
+
+				<label class="field">
+					<span>{copy.phone}</span>
+					<input type="tel" name="phone" maxlength="40" autocomplete="tel" />
+				</label>
+
+				<label class="field">
+					<span>{copy.message}</span>
+					<textarea name="message" required minlength="20" maxlength="4000" rows="6" />
+				</label>
+
+				<!-- Web3Forms honeypot: must stay unchecked -->
+				<label class="hp-check" aria-hidden="true">
+					<input type="checkbox" name="botcheck" tabindex="-1" />
+					<span>{copy.honeypotLabel}</span>
+				</label>
+
+				<!-- Extra honeypot: bots often fill; humans never see -->
+				<label class="hp-field" aria-hidden="true">
+					<span>Website</span>
+					<input type="text" name="company" tabindex="-1" autocomplete="off" />
+				</label>
+
+				<div id="hcaptcha-container" class="hcaptcha-box" />
+
+				<p class="privacy-note">{copy.privacy}</p>
+
+				<button type="submit" class="button form-submit">
+					{copy.submit}
+				</button>
+
+				<p id="form-status" class="form-status" role="status" aria-live="polite" />
+			</form>
+		) : (
+			<div class="card form-missing">
+				<p>
+					{lang === 'ro'
+						? 'Formularul nu este configurat. Adauga PUBLIC_WEB3FORMS_ACCESS_KEY in variabile de mediu.'
+						: 'Form is not configured. Add PUBLIC_WEB3FORMS_ACCESS_KEY to environment variables.'}
+				</p>
+			</div>
+		)
+	}
+</div>
+
+<script is:inline define:vars={{ accessKey, msgs }}>
+	(function () {
+		const cfg = JSON.parse(msgs);
+		const form = document.getElementById('smarteye-contact-form');
+		if (!form || !accessKey) return;
+
+		const MIN_MS = 4500;
+		const MAX_ATTEMPTS_PER_H = 12;
+		const MAX_OK_PER_H = 3;
+		const t0 = Date.now();
+		const ATT_KEY = 'smarteye_w3f_attempts';
+		const OK_KEY = 'smarteye_w3f_ok';
+
+		function readTs(key) {
+			try {
+				const raw = sessionStorage.getItem(key);
+				const now = Date.now();
+				const hour = now - 3600000;
+				const arr = raw ? JSON.parse(raw) : [];
+				return Array.isArray(arr) ? arr.filter((t) => t > hour) : [];
+			} catch {
+				return [];
+			}
+		}
+
+		function pushTs(key, list) {
+			sessionStorage.setItem(key, JSON.stringify(list));
+		}
+
+		let hcaptchaWidgetId = null;
+
+		function loadHcaptcha() {
+			if (window.hcaptcha && document.getElementById('hcaptcha-container')) {
+				hcaptchaWidgetId = window.hcaptcha.render('hcaptcha-container', {
+					sitekey: '50b2fe65-b00b-4b9e-ad62-3ba471098be2',
+					theme: 'dark',
+				});
+				return;
+			}
+			const s = document.createElement('script');
+			s.src = 'https://js.hcaptcha.com/1/api.js';
+			s.async = true;
+			s.defer = true;
+			s.onload = function () {
+				if (!window.hcaptcha) return;
+				hcaptchaWidgetId = window.hcaptcha.render('hcaptcha-container', {
+					sitekey: '50b2fe65-b00b-4b9e-ad62-3ba471098be2',
+					theme: 'dark',
+				});
+			};
+			document.head.appendChild(s);
+		}
+
+		loadHcaptcha();
+
+		const statusEl = document.getElementById('form-status');
+		const submitBtn = form.querySelector('.form-submit');
+
+		function setStatus(text, isError) {
+			if (!statusEl) return;
+			statusEl.textContent = text;
+			statusEl.dataset.error = isError ? '1' : '0';
+		}
+
+		form.addEventListener('submit', async function (e) {
+			e.preventDefault();
+			setStatus('', false);
+
+			const fd = new FormData(form);
+			const company = (fd.get('company') || '').toString().trim();
+			if (company) {
+				setStatus(cfg.errSpam, true);
+				return;
+			}
+
+			if (form.querySelector('input[name="botcheck"]')?.checked) {
+				setStatus(cfg.errSpam, true);
+				return;
+			}
+
+			if (Date.now() - t0 < MIN_MS) {
+				setStatus(cfg.errFast, true);
+				return;
+			}
+
+			let attempts = readTs(ATT_KEY);
+			if (attempts.length >= MAX_ATTEMPTS_PER_H) {
+				setStatus(cfg.errRate, true);
+				return;
+			}
+
+			const okList = readTs(OK_KEY);
+			if (okList.length >= MAX_OK_PER_H) {
+				setStatus(cfg.errRate, true);
+				return;
+			}
+
+			let token = '';
+			if (window.hcaptcha && hcaptchaWidgetId !== null) {
+				token = window.hcaptcha.getResponse(hcaptchaWidgetId);
+			}
+			if (!token) {
+				setStatus(cfg.errCaptcha, true);
+				return;
+			}
+
+			const name = (fd.get('name') || '').toString().trim();
+			const email = (fd.get('email') || '').toString().trim();
+			const phone = (fd.get('phone') || '').toString().trim();
+			const message = (fd.get('message') || '').toString().trim();
+
+			if (message.length < 20) {
+				setStatus(cfg.errGeneric, true);
+				return;
+			}
+
+			attempts.push(Date.now());
+			pushTs(ATT_KEY, attempts);
+
+			if (submitBtn) {
+				submitBtn.disabled = true;
+				submitBtn.textContent = cfg.sending;
+			}
+
+			const body = {
+				access_key: accessKey,
+				subject: cfg.subject,
+				from_name: cfg.fromName,
+				name: name,
+				email: email,
+				message: phone ? message + cfg.phonePrefix + phone : message,
+				botcheck: false,
+				'h-captcha-response': token,
+			};
+
+			try {
+				const res = await fetch('https://api.web3forms.com/submit', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Accept: 'application/json',
+					},
+					body: JSON.stringify(body),
+				});
+				const data = await res.json().catch(function () {
+					return {};
+				});
+
+				if (data.success) {
+					const ok = readTs(OK_KEY);
+					ok.push(Date.now());
+					pushTs(OK_KEY, ok);
+					setStatus(cfg.success, false);
+					form.reset();
+					if (window.hcaptcha && hcaptchaWidgetId !== null) {
+						window.hcaptcha.reset(hcaptchaWidgetId);
+					}
+				} else {
+					setStatus(data.message || cfg.errGeneric, true);
+				}
+			} catch {
+				setStatus(cfg.errGeneric, true);
+			} finally {
+				if (submitBtn) {
+					submitBtn.disabled = false;
+					submitBtn.textContent = cfg.submit;
+				}
+			}
+		});
+	})();
+</script>
+
+<style>
+	.contact-form-wrap {
+		width: 100%;
+	}
+
+	.contact-form {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.field span {
+		display: block;
+		font-size: 0.78rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: #e8eeff;
+		margin-bottom: 0.35rem;
+	}
+
+	.field input,
+	.field textarea {
+		width: 100%;
+		padding: 0.65rem 0.75rem;
+		border-radius: 0.65rem;
+		border: 1px solid var(--border);
+		background: rgba(10, 15, 31, 0.85);
+		color: #e8eeff;
+		font: inherit;
+		font-size: 1rem;
+	}
+
+	.field textarea {
+		resize: vertical;
+		min-height: 140px;
+	}
+
+	.field input:focus,
+	.field textarea:focus {
+		outline: 2px solid rgba(239, 68, 68, 0.45);
+		outline-offset: 1px;
+	}
+
+	.hp-check,
+	.hp-field {
+		position: absolute;
+		left: -9999px;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+	}
+
+	.hcaptcha-box {
+		margin: 0.25rem 0;
+	}
+
+	.privacy-note {
+		font-size: 0.85rem;
+		color: var(--muted);
+		margin: 0;
+	}
+
+	.form-submit {
+		align-self: flex-start;
+		margin-top: 0.25rem;
+	}
+
+	.form-submit:disabled {
+		opacity: 0.65;
+		cursor: not-allowed;
+	}
+
+	.form-status {
+		min-height: 1.25rem;
+		font-size: 0.92rem;
+		margin: 0;
+	}
+
+	.form-status[data-error='1'] {
+		color: #fecaca;
+	}
+
+	.form-status:not([data-error='1']):not(:empty) {
+		color: #86efac;
+	}
+
+	.form-missing p {
+		margin: 0;
+		color: var(--muted);
+	}
+</style>

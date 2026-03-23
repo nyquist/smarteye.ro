@@ -1,0 +1,59 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+---
+
+<Layout
+	lang="en"
+	title="About - Smarteye"
+	description="Smarteye background and selected clients."
+>
+	<SiteHeader lang="en" />
+	<main class="section">
+		<div class="container">
+			<h1>About</h1>
+			<div class="card history">
+				<h2>Brief history</h2>
+				<p>
+					SmartEye started in 1994 under the name Elka Security, among the first Romanian companies
+					specialized in intruder alarm system production and installation.
+				</p>
+				<p>
+					From a small workshop, the company expanded into video surveillance, access control,
+					intercom systems, automations, and other technical solutions.
+				</p>
+				<p>
+					Since 2008, SmartEye Surveillance Solutions in Bucharest has focused on surveillance
+					projects for the small and medium business segment.
+				</p>
+			</div>
+
+			<section class="section clients">
+				<h2>Selected clients</h2>
+				<div class="grid">
+					<article class="card">Mega Image</article>
+					<article class="card">La Placinte</article>
+					<article class="card">Havi Logistics</article>
+					<article class="card">Nextgen</article>
+					<article class="card">Ogilvy Romania</article>
+					<article class="card">Luk-Oil Romania</article>
+					<article class="card">SNR Radiocom</article>
+					<article class="card">Conpet S.A. Ploiesti</article>
+					<article class="card">Romanian Tennis Federation</article>
+				</div>
+			</section>
+		</div>
+	</main>
+	<SiteFooter lang="en" />
+</Layout>
+
+<style>
+	.history {
+		margin-top: 1rem;
+	}
+
+	.clients {
+		padding-bottom: 0;
+	}
+</style>

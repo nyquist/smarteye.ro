@@ -1,17 +1,29 @@
 ---
-import SiteHeader from '../components/SiteHeader.astro';
-import SiteFooter from '../components/SiteFooter.astro';
-import Layout from '../layouts/Layout.astro';
-import { packagesRo } from '../data/packages.js';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import Layout from '../../layouts/Layout.astro';
+import { packagesRo } from '../../data/packages.js';
 
-const packageLabelsRo = {
-	'sistem-alarmare-cu-fir': 'Eficient',
-	'sistem-alarmare-wireless': 'Recomandat',
+const packagesEn = packagesRo.map((pkg) => ({
+	...pkg,
+	name:
+		pkg.slug === 'sistem-alarmare-cu-fir'
+			? 'Wired Alarm System'
+			: pkg.slug === 'sistem-alarmare-wireless'
+				? 'Wireless Alarm System'
+				: pkg.slug === 'sistem-supraveghere-video-interior'
+					? 'Indoor Video Surveillance System'
+					: 'Outdoor Video Surveillance System'
+}));
+
+const packageLabelsEn = {
+	'sistem-alarmare-cu-fir': 'Value',
+	'sistem-alarmare-wireless': 'Recommended',
 	'sistem-supraveghere-video-interior': 'Popular',
 	'sistem-supraveghere-video-exterior': 'Premium'
 };
 
-const packageTagVariantRo = {
+const packageTagVariantEn = {
 	'sistem-alarmare-cu-fir': 'tag-efficient',
 	'sistem-alarmare-wireless': 'tag-recommended',
 	'sistem-supraveghere-video-interior': 'tag-popular',
@@ -20,38 +32,38 @@ const packageTagVariantRo = {
 ---
 
 <Layout
-	lang="ro"
-	title="Smarteye - Sisteme de alarma si supraveghere"
-	description="Sisteme de securitate pentru casa si business: alarma cu fir, wireless si supraveghere video."
+	lang="en"
+	title="Smarteye - Alarm and video security systems"
+	description="Security systems for homes and businesses: wired alarm, wireless alarm and video surveillance."
 >
-	<SiteHeader lang="ro" />
+	<SiteHeader lang="en" />
 	<main>
 		<section class="section hero">
 			<div class="container">
-				<h1>Securitate inteligenta, instalata profesionist.</h1>
+				<h1>Smart security, installed professionally.</h1>
 				<p>
-					Sisteme de alarmare si supraveghere video pentru locuinte si companii care vor
-					control, fiabilitate si raspuns rapid.
+					Alarm and video surveillance systems for homes and businesses that need control,
+					reliability, and fast response.
 				</p>
 				<div class="actions">
-					<a class="button" href="/contact">Cere oferta</a>
-					<a class="button secondary" href="#pachete">Vezi pachetele</a>
+					<a class="button" href="/en/contact">Request offer</a>
+					<a class="button secondary" href="#packages">View packages</a>
 				</div>
 				<div class="chips">
-					<span class="chip">Instalare rapida</span>
-					<span class="chip">Echipamente fiabile</span>
-					<span class="chip">Suport dedicat</span>
+					<span class="chip">Fast installation</span>
+					<span class="chip">Reliable equipment</span>
+					<span class="chip">Dedicated support</span>
 				</div>
 			</div>
 		</section>
-		<section class="section" id="pachete">
+		<section class="section" id="packages">
 			<div class="container">
-				<h2 class="section-title">Pachete recomandate</h2>
+				<h2 class="section-title">Recommended packages</h2>
 				<div class="grid">
 					{
-						packagesRo.map((pkg) => (
+						packagesEn.map((pkg) => (
 							<article class="card package-card">
-								<span class={`tag ${packageTagVariantRo[pkg.slug]}`}>{packageLabelsRo[pkg.slug]}</span>
+								<span class={`tag ${packageTagVariantEn[pkg.slug]}`}>{packageLabelsEn[pkg.slug]}</span>
 								<h3>{pkg.name}</h3>
 								<p class="price"><strong>{pkg.price}</strong></p>
 								<ul>
@@ -59,7 +71,7 @@ const packageTagVariantRo = {
 										<li>{item}</li>
 									))}
 								</ul>
-								<a class="button package-btn" href="/contact">Cere oferta</a>
+								<a class="button package-btn" href="/en/contact">Request offer</a>
 							</article>
 						))
 					}
@@ -68,64 +80,62 @@ const packageTagVariantRo = {
 		</section>
 		<section class="section">
 			<div class="container">
-				<h2 class="section-title">De ce Smarteye</h2>
+				<h2 class="section-title">Why Smarteye</h2>
 				<div class="grid">
 					<article class="card">
-						<h3>Expertiza tehnica</h3>
-						<p>Configuram sistemele dupa nevoile reale ale locatiei, nu dupa sabloane rigide.</p>
+						<h3>Technical expertise</h3>
+						<p>We tailor each setup to your location and use-case, not generic templates.</p>
 					</article>
 					<article class="card">
-						<h3>Monitorizare eficienta</h3>
-						<p>Ai acces rapid la informatii si alerte pentru reactii mai rapide la incidente.</p>
+						<h3>Efficient monitoring</h3>
+						<p>Quick access to alerts and system status for better incident response.</p>
 					</article>
 					<article class="card">
-						<h3>Instalare curata</h3>
-						<p>Implementare organizata, cu testare finala si predare clara a sistemului.</p>
+						<h3>Clean installation</h3>
+						<p>Organized implementation with final testing and clear handover.</p>
 					</article>
 					<article class="card">
-						<h3>Suport post-instalare</h3>
-						<p>Ramanem alaturi de tine pentru optimizari, mentenanta si extinderi.</p>
+						<h3>Post-install support</h3>
+						<p>We stay available for maintenance, optimization, and future upgrades.</p>
 					</article>
 				</div>
 			</div>
 		</section>
 		<section class="section">
 			<div class="container">
-				<h2 class="section-title">Cum lucram</h2>
+				<h2 class="section-title">How we work</h2>
 				<div class="grid steps">
 					<article class="card">
 						<p class="step-no">01</p>
-						<h3>Evaluare si recomandare</h3>
-						<p>Discutam contextul locatiei si alegem pachetul potrivit.</p>
+						<h3>Assessment and recommendation</h3>
+						<p>We review your property and define the right solution.</p>
 					</article>
 					<article class="card">
 						<p class="step-no">02</p>
-						<h3>Instalare si configurare</h3>
-						<p>Implementam sistemul si calibram functiile esentiale.</p>
+						<h3>Installation and setup</h3>
+						<p>We install and configure all essential system functions.</p>
 					</article>
 					<article class="card">
 						<p class="step-no">03</p>
-						<h3>Predare si suport</h3>
-						<p>Te instruim si ramanem disponibili pentru asistenta ulterioara.</p>
+						<h3>Handover and support</h3>
+						<p>You get guided onboarding and ongoing assistance after delivery.</p>
 					</article>
 				</div>
 			</div>
 		</section>
 		<section class="section">
 			<div class="container card cta-final">
-				<h2>Gata sa iti securizezi proprietatea?</h2>
-				<p>
-					Trimite-ne cererea ta si revenim rapid cu o recomandare clara pentru casa sau business.
-				</p>
+				<h2>Ready to secure your property?</h2>
+				<p>Send us your request and we will return with a clear recommendation.</p>
 				<div class="actions">
-					<a class="button" href="/contact">Cere oferta</a>
-					<a class="button secondary" href="tel:+40xxxxxxxxx">Suna acum</a>
+					<a class="button" href="/en/contact">Request offer</a>
+					<a class="button secondary" href="tel:+40xxxxxxxxx">Call now</a>
 				</div>
 			</div>
 		</section>
 	</main>
-	<SiteFooter lang="ro" />
-	<a class="mobile-cta" href="/contact">Cere oferta</a>
+	<SiteFooter lang="en" />
+	<a class="mobile-cta" href="/en/contact">Request offer</a>
 </Layout>
 
 <style>

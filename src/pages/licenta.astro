@@ -1,0 +1,63 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+---
+
+<Layout
+	lang="ro"
+	title="Licenta sisteme de securitate - Smarteye"
+	description="Detalii despre licenta Smarteye si datele de contact publicate."
+>
+	<SiteHeader lang="ro" />
+	<main class="section">
+		<div class="container">
+			<h1>Licenta sisteme de securitate</h1>
+			<div class="grid license-grid">
+				<article class="card">
+					<h2>Licenta</h2>
+					<p><strong>Nr:</strong> 1734/T/14.07.2009</p>
+					<figure class="license-figure">
+						<img
+							src="/licenta-2015.png"
+							alt="Licenta Smarteye - sisteme de securitate"
+							width="796"
+							height="553"
+							loading="lazy"
+						/>
+					</figure>
+				</article>
+				<article class="card">
+					<h2>Date de contact</h2>
+					<p><strong>Telefon:</strong> 0725 252 762, 021 2310 697</p>
+					<p><strong>Email:</strong> office@smarteye.ro, vanzari@smarteye.ro, service@smarteye.ro</p>
+					<p>
+						<strong>Adresa:</strong> Strada Pictor Stefan Luchian nr. 20, cam 3, Sector 2,
+						Bucuresti, CP 023958
+					</p>
+				</article>
+			</div>
+		</div>
+	</main>
+	<SiteFooter lang="ro" />
+</Layout>
+
+<style>
+	.license-grid {
+		margin-top: 1rem;
+	}
+
+	.license-figure {
+		margin: 0.75rem 0 0;
+		border-radius: 0.75rem;
+		overflow: hidden;
+		border: 1px solid var(--border);
+		background: #0a0f1f;
+	}
+
+	.license-figure img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+</style>

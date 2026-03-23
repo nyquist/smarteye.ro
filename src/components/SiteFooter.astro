@@ -1,0 +1,156 @@
+---
+const { lang = 'ro' } = Astro.props;
+const isRo = lang === 'ro';
+---
+
+<footer class="site-footer">
+	<div class="container footer-inner">
+		<div class="footer-top">
+			<div class="brand-block">
+				<img src="/logo-smarteye-red.png" alt="Smarteye" class="logo-white" />
+			</div>
+			<p class="tagline">
+				{isRo
+					? 'Sisteme de securitate pentru locuinte si business.'
+					: 'Security systems for homes and businesses.'}
+			</p>
+		</div>
+		<div class="footer-contact">
+			<div class="contact-line">
+				<strong>{isRo ? 'Telefon' : 'Phone'}</strong>
+				<span class="contact-values">
+					<a href="tel:+40725252762" class="phone-mnemonic">0725 ALARMA</a>
+					<span class="sep" aria-hidden="true">·</span>
+					<a href="tel:+40725252762" class="phone-digits">0725 252 762</a>
+				</span>
+			</div>
+			<div class="contact-line">
+				<strong>{isRo ? 'Fix' : 'Landline'}</strong>
+				<a href="tel:+40212310697">021 2310 697</a>
+			</div>
+			<div class="contact-line">
+				<strong>Email</strong>
+				<span class="contact-values">
+					<a href="mailto:office@smarteye.ro">office@smarteye.ro</a>
+					<span class="sep" aria-hidden="true">·</span>
+					<a href="mailto:vanzari@smarteye.ro">vanzari@smarteye.ro</a>
+					<span class="sep" aria-hidden="true">·</span>
+					<a href="mailto:service@smarteye.ro">service@smarteye.ro</a>
+				</span>
+			</div>
+		</div>
+	</div>
+</footer>
+
+<style>
+	.site-footer {
+		border-top: 1px solid rgba(169, 182, 211, 0.2);
+		padding: 2rem 0 2.5rem;
+	}
+
+	.footer-inner {
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+	}
+
+	.footer-top {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		flex-wrap: wrap;
+	}
+
+	.tagline {
+		margin: 0;
+		max-width: 36ch;
+		color: var(--muted);
+		font-size: 0.95rem;
+	}
+
+	.brand-block {
+		display: flex;
+		align-items: center;
+		gap: 0.8rem;
+	}
+
+	.logo-white {
+		height: 26px;
+		width: auto;
+		filter: brightness(0) saturate(100%) invert(94%) sepia(33%) saturate(407%) hue-rotate(184deg)
+			brightness(106%) contrast(103%);
+		opacity: 0.9;
+	}
+
+	.footer-contact {
+		display: flex;
+		flex-direction: column;
+		gap: 0.65rem;
+		padding-top: 0.25rem;
+		border-top: 1px solid rgba(169, 182, 211, 0.15);
+		font-size: 0.92rem;
+	}
+
+	.contact-line {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.4rem 0.75rem;
+		color: #cdd8f6;
+	}
+
+	.contact-line strong {
+		min-width: 4.5rem;
+		color: #e8eeff;
+		font-weight: 700;
+		font-size: 0.78rem;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+
+	.contact-values {
+		display: inline-flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.35rem 0.5rem;
+	}
+
+	.footer-contact a {
+		color: #93c5fd;
+		text-decoration: none;
+		font-weight: 600;
+	}
+
+	.footer-contact a:hover {
+		text-decoration: underline;
+		color: #bfdbfe;
+	}
+
+	.phone-mnemonic {
+		font-weight: 800;
+		letter-spacing: 0.02em;
+	}
+
+	.sep {
+		color: rgba(169, 182, 211, 0.45);
+		user-select: none;
+	}
+
+	@media (max-width: 560px) {
+		.footer-top {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
+		.contact-line {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 0.25rem;
+		}
+
+		.contact-line strong {
+			min-width: unset;
+		}
+	}
+</style>
